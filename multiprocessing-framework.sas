@@ -5,14 +5,14 @@
  * running on the same machine
  */
  
- options autosignon=yes sascmd="!sascmd -dmr";
+options autosignon=yes sascmd="!sascmd -dmr";
  
- /* path to yor program */
- %global PRG_DIR;
- %let PRG_DIR = c:\sas\prg; 
+/* path to yor program */
+%global PRG_DIR;
+%let PRG_DIR = c:\sas\prg; 
  
  
- %macro Signon(process);
+%macro Signon(process);
    filename L&process. "&PRG_DIR\&process..log";
    %put Process &process is been starting...;
    signon &process;
@@ -29,7 +29,17 @@
      %put &process started.
      
    endrsubmit;
-   
- %mend;
+   rdisplay &process;
+%mend;
  
+%macro Signon(process);
+   %let fstime=%sysfunc(putn(%sysfunc(time()), time.));
+   %put Rsubmit to process <&process>: &fstime;
+   rsubmit process=&process wait=no cwait=no csysrputsync=yes log=L&process.;
+     options compress=yes;
+     %let fstime=%sysfunc(putn(%sysfunc(time()), time.));
+     %put Rsubmit: &fstime;
+%mend;
+
+
  
