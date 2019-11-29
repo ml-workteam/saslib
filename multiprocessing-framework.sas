@@ -32,7 +32,7 @@ options autosignon=yes sascmd="!sascmd -dmr";
    rdisplay &process;
 %mend;
  
-%macro Signon(process);
+%macro Rsubmit(process);
    %let fstime=%sysfunc(putn(%sysfunc(time()), time.));
    %put Rsubmit to process <&process>: &fstime;
    rsubmit process=&process wait=no cwait=no csysrputsync=yes log=L&process.;
